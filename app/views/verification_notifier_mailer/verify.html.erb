@@ -1,0 +1,6 @@
+Thank you for signing up for BattleShift!
+Please follow the link below to verify your account.
+
+<%= link_to 'Verify', verification_url(api_key: @user.api_key) %>
+
+Your unique API key is <%= @user.api_key %>

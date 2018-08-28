@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     if @user.save
       @user.api_key = SecureRandom.hex(32)
       @user.save
+      VerificationNotifierMailer.verify(@user).deliver_now
       session[:user_id] = @user.id
       redirect_to dashboard_path
     else
