@@ -20,8 +20,8 @@ module Api
                         player_2_turns: 0,
                         current_turn: "challenger"
                       }
-
-        game  = Game.create(game_attributes)
+        game = Game.create(game_attributes)
+        render json: game
       end
     end
   end
