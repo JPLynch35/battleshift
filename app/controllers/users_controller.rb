@@ -7,8 +7,7 @@ class UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.save
-      @user.api_key = SecureRandom.hex(32)
-      @user.save
+      @user.update_attribute(:api_key, SecureRandom.hex(32))
       VerificationNotifierMailer.verify(@user).deliver_now
       session[:user_id] = @user.id
       redirect_to dashboard_path
