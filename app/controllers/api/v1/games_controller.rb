@@ -12,8 +12,8 @@ module Api
 
       def create
         game_attributes = {
-                        player_1: User.find_by_api_key(request.headers['X-API-Key']),
-                        player_2: User.find_by_email(params[:opponenet_email]),
+                        player_1_key: request.headers['X-API-Key'],
+                        player_2_key: User.find_by_email(params[:opponent_email]).api_key,
                         player_1_board: Board.new(4),
                         player_2_board: Board.new(4),
                         player_1_turns: 0,
@@ -21,8 +21,7 @@ module Api
                         current_turn: "challenger"
                       }
 
-        binding.pry
-        game  = Game.create()
+        game  = Game.create(game_attributes)
       end
     end
   end
