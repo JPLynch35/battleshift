@@ -9,6 +9,7 @@ class Shooter
     if valid_shot?
       space.attack!
     else
+      # render status: 400, json: game, message: "Invalid coordinates."
       raise InvalidAttack.new("Invalid coordinates.")
     end
   end
