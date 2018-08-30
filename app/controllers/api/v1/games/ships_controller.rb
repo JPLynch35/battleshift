@@ -8,6 +8,11 @@ class Api::V1::Games::ShipsController < ApiController
       start_space: body[:start_space],
       end_space: body[:end_space]
     ).run
-    render json: game, message: "Successfully placed ship with a size of 3. You have 1 ship(s) to place with a size of 2."
+    game.update_attribute(:player_1_board, game.player_1_board)
+    if body[:ship_size] == 3
+      render json: game, message: "Successfully placed ship with a size of #{body[:ship_size]}. You have 1 ship(s) to place with a size of 2."
+    else
+      render json: game, message: "Successfully placed ship with a size of #{body[:ship_size]}. You have 0 ship(s) to place."
+    end
   end
 end

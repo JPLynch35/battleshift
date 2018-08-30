@@ -24,7 +24,7 @@ describe 'POST /api/v1/games/:id/ships' do
     post "/api/v1/games/#{game.id}/ships", params: json_payload, headers: headers
 
     expect(response.status).to be(200)
-    expect(response.body[:message]).to eq("Successfully placed ship with a size of 3. You have 1 ship(s) to place with a size of 2.")
-    expect(game_attributes[:player_1_board].board.first.first['A1'].contents).to be(Ship)
+    expect(JSON.parse(response.body, symbolize_names: true)[:message]).to eq("Successfully placed ship with a size of 3. You have 1 ship(s) to place with a size of 2.")
+    expect(Game.last.player_1_board.board.first.first['A1'].contents).to be_a(Ship)
   end
 end
