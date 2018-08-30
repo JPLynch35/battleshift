@@ -1,11 +1,13 @@
 class Api::V1::Games::ShipsController < ApiController
   def create
     game = Game.find(params[:game_id])
+    board = nil
     if request.headers['X-API-KEY'] == game.player_1_key
       board = game.player_1_board
-    else
+    else request.headers['X-API-KEY'] == game.player_2_key
       board = game.player_2_board
     end
+    return if board == nil
     ShipPlacer.new(
       board: board,
       ship: Ship.new(ship_params[:ship_size]),
