@@ -45,7 +45,6 @@ class TurnProcessor
       @messages << "Game over."
       winner_email = User.find_by_api_key(game.player_1_key).email
       game.update_attribute(:winner, winner_email)
-      binding.pry
     end
   end
 
