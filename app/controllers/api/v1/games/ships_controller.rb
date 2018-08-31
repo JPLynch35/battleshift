@@ -4,8 +4,10 @@ class Api::V1::Games::ShipsController < ApiController
     board = nil
     if request.headers['X-API-KEY'] == game.player_1_key
       board = game.player_1_board
-    else request.headers['X-API-KEY'] == game.player_2_key
+    elsif request.headers['X-API-KEY'] == game.player_2_key
       board = game.player_2_board
+    else
+      render json: {message: "Unauthorized"}, status: 401
     end
     return if board == nil
     ShipPlacer.new(
