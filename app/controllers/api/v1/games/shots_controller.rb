@@ -12,8 +12,10 @@ class Api::V1::Games::ShotsController < ApiController
         elsif game.current_turn == 'opponent' && request.headers['X-API-KEY'] == game.player_2_key
           turn_processor.run_player_2!
           render json: game, message: turn_processor.message
-        else
+        elsif request.headers['X-API-KEY'] == game.player_1_key || request.headers['X-API-KEY'] == game.player_2_key
           render status: 400, json: game, message: "Invalid move. It's your opponent's turn"
+        else
+          render json: {message: "Unauthorized"}, status: 401
         end
       end
     else
