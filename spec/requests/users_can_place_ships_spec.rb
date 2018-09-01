@@ -28,20 +28,19 @@ describe 'POST /api/v1/games/:id/ships' do
     expect(JSON.parse(response.body, symbolize_names: true)[:message]).to eq("Successfully placed ship with a size of 3. You have 1 ship(s) to place with a size of 2.")
     expect(Game.last.player_1_board.board.first.first['A1'].contents).to be_a(Ship)
 
-    # #test to make sure it only works with a valid api key
-    # json_payload = {
-    #   ship_size: 2,
-    #   start_space: "C1",
-    #   end_space: "C2"
-    # }.to_json
-    #
-    # headers = {"X-API-Key" => nil, "CONTENT_TYPE" => "application/json" }
-    #
-    # post "/api/v1/games/#{game.id}/ships", params: json_payload, headers: headers
-    #
-    # expect(response.status).to be(200)
-    # expect(JSON.parse(response.body, symbolize_names: true)[:message]).to eq("Successfully placed ship with a size of 2. You have 0 ship(s) to place.")
-    # expect(Game.last.player_1_board.board.third.first['C1'].contents).to_not be_a(Ship)
+    #test to make sure it only works with a valid api key
+    json_payload = {
+      ship_size: 2,
+      start_space: "C1",
+      end_space: "C2"
+    }.to_json
+    
+    headers = {"X-API-Key" => 'bobby', "CONTENT_TYPE" => "application/json" }
+    
+    post "/api/v1/games/#{game.id}/ships", params: json_payload, headers: headers
+
+    expect(response.status).to be(401)
+    expect(JSON.parse(response.body, symbolize_names: true)[:message]).to eq("Unauthorized")
 
     json_payload = {
       ship_size: 2,
