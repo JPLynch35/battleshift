@@ -1,59 +1,65 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# describe PlayerTurnCheck do
-#   before :each do
-#     @user1 = User.create(name: 'Angela', email: 'Bob@Bob.Bob', password: 'Bob', status: 1, api_key: SecureRandom.hex(32))
-#     @user2 = User.create(name: 'JP', email: 'JP@Bob.Bob', password: 'JP', status: 1, api_key: SecureRandom.hex(32))
-#     game_attributes = {
-#       player_1_key: @user1.api_key,
-#       player_2_key: @user2.api_key,
-#       player_1_board: Board.new(4),
-#       player_2_board: Board.new(4),
-#       player_1_turns: 0,
-#       player_2_turns: 0,
-#       current_turn: "challenger"
-#     }
-#     @game = Game.create(game_attributes)
-#     ShipPlacer.new(
-#       board: @game.player_1_board,
-#       ship: Ship.new(3),
-#       start_space: "A1",
-#       end_space: "A3"
-#     ).run
-#     ShipPlacer.new(
-#       board: @game.player_2_board,
-#       ship: Ship.new(3),
-#       start_space: "D1",
-#       end_space: "D3"
-#     ).run
-#     ShipPlacer.new(
-#       board: @game.player_1_board,
-#       ship: Ship.new(2),
-#       start_space: "D3",
-#       end_space: "D4"
-#     ).run
-#     ShipPlacer.new(
-#       board: @game.player_2_board,
-#       ship: Ship.new(2),
-#       start_space: "B3",
-#       end_space: "B4"
-#     ).run
-#     @game.update_attribute(:player_1_board, @game.player_1_board)
-#     @game.update_attribute(:player_2_board, @game.player_2_board)
-#   end
-#   it 'exists' do
-#     check = PlayerTurnCheck.new(@game, @user1.api_key, "A1")
+describe PlayerTurnCheck do
+  before :each do
+    @user1 = User.create(name: 'Angela', email: 'Bob@Bob.Bob', password: 'Bob', status: 1, api_key: SecureRandom.hex(32))
+    @user2 = User.create(name: 'JP', email: 'JP@Bob.Bob', password: 'JP', status: 1, api_key: SecureRandom.hex(32))
+    game_attributes = {
+      player_1_key: @user1.api_key,
+      player_2_key: @user2.api_key,
+      player_1_board: Board.new(4),
+      player_2_board: Board.new(4),
+      player_1_turns: 0,
+      player_2_turns: 0,
+      current_turn: "challenger"
+    }
+    @game = Game.create(game_attributes)
+    ShipPlacer.new(
+      board: @game.player_1_board,
+      ship: Ship.new(3),
+      start_space: "A1",
+      end_space: "A3"
+    ).run
+    ShipPlacer.new(
+      board: @game.player_2_board,
+      ship: Ship.new(3),
+      start_space: "D1",
+      end_space: "D3"
+    ).run
+    ShipPlacer.new(
+      board: @game.player_1_board,
+      ship: Ship.new(2),
+      start_space: "D3",
+      end_space: "D4"
+    ).run
+    ShipPlacer.new(
+      board: @game.player_2_board,
+      ship: Ship.new(2),
+      start_space: "B3",
+      end_space: "B4"
+    ).run
+    @game.update_attribute(:player_1_board, @game.player_1_board)
+    @game.update_attribute(:player_2_board, @game.player_2_board)
+  end
+  it 'exists' do
+    check = PlayerTurnCheck.new(@game, @user1.api_key, "A1")
 
-#     expect(check).to be_a(PlayerTurnCheck)
-#   end
-#   it 'can return the game if player api key is valid' do
-#     check = PlayerTurnCheck.new(@game, @user1.api_key, "A1")
-#     game = check.game_return
-# require 'pry'; binding.pry
-#     expect(game.id).to eq(1)
-#     expect(game.player_1_board).to be_a(Board)
-#   end
-# end
+    expect(check).to be_a(PlayerTurnCheck)
+  end
+  it 'will return the game if player api key is valid' do
+    check = PlayerTurnCheck.new(@game, @user1.api_key, "A1")
+    game = check.game_return
+
+    expect(game.id).to eq(1)
+    expect(game.player_1_board).to be_a(Board)
+  end
+  it 'will not return the game if player api key is invalid' do
+    check = PlayerTurnCheck.new(@game, 'bobby', "A1")
+    game = check.game_return
+
+    expect(game).to eq(nil)
+  end
+end
 
 
 # describe "POST /api/v1/games/:id/shots" do

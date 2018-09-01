@@ -6,7 +6,7 @@ class PlayerTurnCheck < ApplicationController
   end
 
   def game_return
-    game if game.player_1_key || api_key == game.player_2_key
+    game if api_key == game.player_1_key || api_key == game.player_2_key
   end
 
   def status_return
@@ -19,7 +19,7 @@ class PlayerTurnCheck < ApplicationController
 
   def message_return
     if api_key != game.player_1_key && api_key != game.player_2_key
-      "Unauthorized"
+      return "Unauthorized"
     else
       current_turn_message
     end
