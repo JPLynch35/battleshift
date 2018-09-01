@@ -1,7 +1,7 @@
-class Player
-  attr_reader :board
+# class Player
+#   attr_reader :board
 
-  def initialize(board)
-    @board = board
-  end
-end
+#   def initialize(board)
+#     @board = board
+#   end
+# end
