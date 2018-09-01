@@ -14,4 +14,5 @@ describe User, type: :model do
     expect(user).to be_a(User)
     expect(user.status).to eq('inactive')
   end
+
 end
