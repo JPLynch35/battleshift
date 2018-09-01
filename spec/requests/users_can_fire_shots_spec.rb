@@ -34,12 +34,11 @@ describe "POST /api/v1/games/:id/shots" do
     json_payload = {target: "D1"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-
     expect(response.status).to eq(200)
     expect(JSON.parse(response.body, symbolize_names: true)[:message]).to include("Your shot resulted in a Hit")
     expect(Game.last.player_2_board.board.last.first['D1'].status).to eq("Hit")
     expect(Game.last[:winner]).to be_nil
-
+    
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "A1"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }

@@ -1,31 +1,22 @@
 class Api::V1::Games::ShotsController < ApiController
   def create
     game = Game.find(params[:game_id])
-    if User.find_by_api_key(request.headers['X-API-Key'])
-      turn_processor = TurnProcessor.new(game, params[:shot][:target])
+    api_key = request.headers['X-API-Key']
+    target = params[:shot][:target]
+    if User.find_by_api_key(api_key)
+      # turn_processor = TurnProcessor.new(game, target)
 
 
-          if !game.player_1_board.space_names.include?(params[:shot][:target])
+          if !game.player_1_board.space_names.include?(target)
             render status: 400, json: game, message: "Invalid coordinates."
           elsif !game.winner.nil?
             render status: 400, json: game, message: "Invalid move. Game over."
           else
 
-
-                if game.current_turn == 'challenger' && request.headers['X-API-KEY'] == game.player_1_key
-                  turn_processor.run_player_1!
-                  render json: game, message: turn_processor.message
-                elsif game.current_turn == 'opponent' && request.headers['X-API-KEY'] == game.player_2_key
-                  turn_processor.run_player_2!
-                  render json: game, message: turn_processor.message
-                elsif request.headers['X-API-KEY'] == game.player_1_key || request.headers['X-API-KEY'] == game.player_2_key
-                  render status: 400, json: game, message: "Invalid move. It's your opponent's turn"
-                else
-                  render json: {message: "Unauthorized"}, status: 401
-                end
-
+                check = PlayerTurnCheck.new(game, api_key, target)
+                render json: check.game_return, status: check.status_return, message: check.message_return
                 
-              end
+          end
         else
           render json: {message: "Unauthorized"}, status: 401
         end
