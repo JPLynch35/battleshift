@@ -58,6 +58,8 @@ class TurnProcessor
     game.player_2_turns += 1
     if game.p2_kill_count == 2
       @messages << "Game over."
+      winner_email = User.find_by_api_key(game.player_2_key).email
+      game.update_attribute(:winner, winner_email)
     end
   end
 end
