@@ -7,7 +7,8 @@ class TurnProcessor
 
   def run_player_1!
     begin
-      attack_opponent
+      attack(game.player_2_board, game.player_1_turns, game.player_1_key)
+      # attack_opponent
       game.current_turn = 'opponent'
       game.save!
     rescue InvalidAttack => e
@@ -32,6 +33,21 @@ class TurnProcessor
   private
 
   attr_reader :game, :target
+
+  def attack(board, p_turns, p_key)
+    result = Shooter.fire!(board: board, target: target)
+    @messages << "Your shot resulted in a #{result}."
+    if result == "Hit" && board.locate_space(target).contents.is_sunk?
+      @messages << "Battleship sunk."
+      game.update_attribute(:p1_kill_count, game.p1_kill_count += 1)
+    end
+    p_turns += 1
+    if game.p1_kill_count == 2
+      @messages << "Game over."
+      winner_email = User.find_by_api_key(p_key).email
+      game.update_attribute(:winner, winner_email)
+    end
+  end
 
   def attack_opponent
     result = Shooter.fire!(board: game.player_2_board, target: target)
