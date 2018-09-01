@@ -56,9 +56,9 @@ class TurnProcessor
 
   def attack_challenger
     result = Shooter.fire!(board: game.player_1_board, target: target)
-    @messages << "Your shot resulted in a #{result}."
+    @messages << "Your shot resulted in a #{result}. This is (attacked_challenger)"
     if result == "Hit" && game.player_1_board.locate_space(target).contents.is_sunk?
-      @messages << "Battleship sunk."
+      @messages << "Battleship sunk. This is (attacked_challenger)"
       game.update_attribute(:p2_kill_count, game.p2_kill_count += 1)
     end
     game.player_2_turns += 1
