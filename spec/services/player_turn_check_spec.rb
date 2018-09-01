@@ -59,6 +59,52 @@ describe PlayerTurnCheck do
 
     expect(game).to eq(nil)
   end
+  it 'will return a 401 status if invalid API key' do
+    check = PlayerTurnCheck.new(@game, 'bobby', "A1")
+    status = check.status_return
+
+    expect(status).to eq(401)
+  end
+  it 'will return a 200 status if valid API key' do
+    check1 = PlayerTurnCheck.new(@game, @user1.api_key, "A1")
+    status1 = check1.status_return
+    check1.message_return
+    check2 = PlayerTurnCheck.new(@game, @user2.api_key, "A1")
+    status2 = check2.status_return
+
+    expect(status1).to eq(200)
+    expect(status2).to eq(200)
+  end
+  it 'will return a 400 status if players attempt to go out of turn' do
+    check = PlayerTurnCheck.new(@game, @user2.api_key, "A1")
+    status = check.status_return
+
+    expect(status).to eq(400)
+  end
+  it 'will return an unauthorized message if invalid API key' do
+    check = PlayerTurnCheck.new(@game, 'bobby', "A1")
+    message = check.message_return
+
+    expect(message).to eq('Unauthorized')
+  end
+  it 'will return a hit message if shot matches ship location' do
+    check = PlayerTurnCheck.new(@game, @user1.api_key, "D1")
+    message = check.message_return
+
+    expect(message).to include('Hit')
+  end
+  it 'will return a miss message if shot does not match ship location' do
+    check = PlayerTurnCheck.new(@game, @user1.api_key, "A4")
+    message = check.message_return
+
+    expect(message).to include('Miss')
+  end
+  it 'will return an invalid message if player attempts to play out of turn' do
+    check = PlayerTurnCheck.new(@game, @user2.api_key, "A4")
+    message = check.message_return
+
+    expect(message).to eq("Invalid move. It's your opponent's turn.")
+  end
 end
 
 
