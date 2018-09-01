@@ -36,16 +36,11 @@ class TurnProcessor
   def attack_opponent
     result = Shooter.fire!(board: game.player_2_board, target: target)
     @messages << "Your shot resulted in a #{result}."
-    if result == "Hit" 
-      @messages << "It hit like intended"
-    else
-      @messages << "It did not hit like intended"
+    if result == "Hit" && game.player_2_board.locate_space(target).contents.is_sunk?
+      @messages << "Battleship sunk."
+      game.update_attribute(:p1_kill_count, game.p1_kill_count += 1)
     end
-    if game.player_2_board.locate_space(target).contents.is_sunk?
-      @messages << "The ship is sinking"
-    else
-      @messages << "The ship is not sinking"
-    end
+    game.player_1_turns += 1
     if game.p1_kill_count == 2
       @messages << "Game over."
       winner_email = User.find_by_api_key(game.player_1_key).email
