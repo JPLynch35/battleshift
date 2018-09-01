@@ -1,4 +1,4 @@
-class PlayerTurnCheck < ApplicationController
+class PlayerMoveCheck < ApplicationController
   def initialize(game, api_key, target)
     @game = game
     @api_key = api_key
@@ -29,9 +29,9 @@ class PlayerTurnCheck < ApplicationController
   attr_reader :game, :api_key, :target
   
   def current_turn_status
-    if game.current_turn == 'challenger' && api_key == game.player_1_key
+    if game.current_turn == 'challenger' && api_key == game.player_1_key && game.winner == nil
       200
-    elsif game.current_turn == 'opponent' && api_key == game.player_2_key
+    elsif game.current_turn == 'opponent' && api_key == game.player_2_key && game.winner == nil
       200
     else
       400
@@ -39,7 +39,9 @@ class PlayerTurnCheck < ApplicationController
   end
 
   def current_turn_message
-    if game.current_turn == 'challenger' && api_key == game.player_1_key
+    if !game.winner.nil?
+      "Invalid move. Game over."
+    elsif  game.current_turn == 'challenger' && api_key == game.player_1_key
       turn_processor = TurnProcessor.new(game, target)
       turn_processor.run_player_1!
       turn_processor.message
@@ -47,6 +49,8 @@ class PlayerTurnCheck < ApplicationController
       turn_processor = TurnProcessor.new(game, target)
       turn_processor.run_player_2!
       turn_processor.message
+    elsif game.current_turn.nil?
+      "Invalid move. Game over."
     else
       "Invalid move. It's your opponent's turn."
     end
