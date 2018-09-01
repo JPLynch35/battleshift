@@ -32,5 +32,12 @@ describe 'a user' do
 
       expect(page).to have_content('Create a new account')
     end
+    it 'changes status upon verification' do
+      User.create(name: 'Jorj', email: 'jorj@jorj.com', password: 'jorj')
+
+      visit verification_path
+
+      expect(User.last.status).to eq('active')
+    end
   end
 end

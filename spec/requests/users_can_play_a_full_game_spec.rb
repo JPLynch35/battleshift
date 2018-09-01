@@ -44,87 +44,133 @@ describe "POST /api/v1/games/:id/shots" do
   it 'can play a full game' do
     #hits
     endpoint = "/api/v1/games/#{@game_id}/shots"
-    json_payload = {target: "A1"}.to_json
+    json_payload = {target: "D1"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit.')
+
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "A1"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit.')
 
     #misses
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "C1"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Miss.')
+
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "C1"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Miss.')
 
     #invalid board spaces
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "E1"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Invalid coordinates.')
+
     endpoint = "/api/v1/games/#{@game_id}/shots"
-    json_payload = {target: "E1"}.to_json
+    json_payload = {target: "B6"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Invalid coordinates.')
 
     #hits
     endpoint = "/api/v1/games/#{@game_id}/shots"
-    json_payload = {target: "A2"}.to_json
+    json_payload = {target: "D2"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit.')
+
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "A2"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit.')
 
     #sink ships
     endpoint = "/api/v1/games/#{@game_id}/shots"
-    json_payload = {target: "A3"}.to_json
+    json_payload = {target: "D3"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit. Battleship sunk.')
+
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "A3"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
 
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit. Battleship sunk.')
+
     #wrong turn
     endpoint = "/api/v1/games/#{@game_id}/shots"
-    json_payload = {target: "A3"}.to_json
+    json_payload = {target: "A4"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq("Invalid move. It's your opponent's turn.")
+
     #hit
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "B3"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit.')
+
     #miss
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "B4"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Miss.')
+
     #sink ship and win game
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "B4"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-    
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Your shot resulted in a Hit. Battleship sunk. Game over.')
+    expect(result['winner']).to eq(@user1.email)
+
     #try to play after winner
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "D4"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
+
+    result = JSON.parse(response.body)
+    expect(result['message']).to eq('Invalid move. Game over.')
   end
 end
