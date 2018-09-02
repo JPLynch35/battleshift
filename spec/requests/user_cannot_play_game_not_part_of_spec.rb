@@ -15,28 +15,13 @@ describe "POST /api/v1/games/:id/shots" do
       current_turn: "challenger"
     }
     @game = Game.create(game_attributes)
-    ShipPlacer.new(
-      board: @game.player_1_board,
-      ship: Ship.new(3),
-      start_space: "A1",
-      end_space: "A3"
-    ).run
-    ShipPlacer.new(
-      board: @game.player_2_board,
-      ship: Ship.new(3),
-      start_space: "D1",
-      end_space: "D3"
-    ).run
-    @game.update_attribute(:player_1_board, @game.player_1_board)
-    @game.update_attribute(:player_2_board, @game.player_2_board)
   end
   it 'a player cannot play a game they are not a part of' do
-    # endpoint = "/api/v1/games/#{@game.id}/shots"
-    # json_payload = {target: "A1"}.to_json
-    # headers = {"X-API-Key" => @user3.api_key, "CONTENT_TYPE" => "application/json" }
-    # post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
+    json_payload = {target: "A1"}.to_json
+    headers = {"X-API-Key" => @user3.api_key, "CONTENT_TYPE" => "application/json" }
+    post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
 
-    # expect(response.status).to eq(401)
-    # expect(JSON.parse(response.body, symbolize_names: true)[:message]).to eq("Unauthorized")
+    expect(response.status).to eq(401)
+    expect(JSON.parse(response.body, symbolize_names: true)[:message]).to eq("Unauthorized")
   end
 end

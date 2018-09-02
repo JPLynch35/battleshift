@@ -36,7 +36,7 @@ class TurnProcessor
   attr_reader :game, :target
 
   def attack!(p_board, p_kill_count, p_key)
-    result = Shooter.fire!(board: p_board, target: target)
+    result = Shooter.new(board: p_board, target: target).fire!
     @messages << "Your shot resulted in a #{result}."
     (p_kill_count += 1) if sunk_check(result, p_board, p_key, p_kill_count)
     game_over_check(p_kill_count, p_key)
@@ -62,5 +62,5 @@ class TurnProcessor
       game.update_attribute(:winner, winner_email)
     end
   end
-  
+
 end

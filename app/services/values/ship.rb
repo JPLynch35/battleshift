@@ -9,11 +9,6 @@ class Ship
     @end_space = nil
   end
 
-  # def place(start_space, end_space)
-  #   @start_space = start_space
-  #   @end_space = end_space
-  # end
-
   def attack!
     @damage += 1
   end
