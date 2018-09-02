@@ -20,8 +20,6 @@ class PlayerMoveCheck < ApplicationController
   def message_return
     if api_key != game.player_1_key && api_key != game.player_2_key
       'Unauthorized'
-    elsif !game.player_1_board.space_names.include?(target)
-      'Invalid coordinates.'
     else
       current_turn_message
     end
@@ -43,6 +41,8 @@ class PlayerMoveCheck < ApplicationController
   def current_turn_message
     if !game.winner.nil?
       "Invalid move. Game over."
+    elsif !game.player_1_board.space_names.include?(target)
+      "Invalid coordinates."
     elsif  game.current_turn == 'challenger' && api_key == game.player_1_key
       turn_processor = TurnProcessor.new(game, target)
       turn_processor.run_player_1!
@@ -51,8 +51,6 @@ class PlayerMoveCheck < ApplicationController
       turn_processor = TurnProcessor.new(game, target)
       turn_processor.run_player_2!
       turn_processor.message
-    elsif game.current_turn.nil?
-      "Invalid move. Game over."
     else
       "Invalid move. It's your opponent's turn."
     end
