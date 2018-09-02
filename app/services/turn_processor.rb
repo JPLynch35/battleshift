@@ -7,7 +7,7 @@ class TurnProcessor
 
   def run_player_1!
     # begin
-      attack(game.player_2_board, game.p1_kill_count, game.player_1_key)
+      attack!(game.player_2_board, game.p1_kill_count, game.player_1_key)
       game.current_turn = 'opponent'
       game.player_1_turns += 1
       game.save!
@@ -18,7 +18,7 @@ class TurnProcessor
 
   def run_player_2!
     # begin
-      attack(game.player_1_board, game.p2_kill_count, game.player_2_key)
+      attack!(game.player_1_board, game.p2_kill_count, game.player_2_key)
       game.current_turn = 'challenger'
       game.player_2_turns += 1
       game.save!
@@ -35,7 +35,7 @@ class TurnProcessor
 
   attr_reader :game, :target
 
-  def attack(p_board, p_kill_count, p_key)
+  def attack!(p_board, p_kill_count, p_key)
     result = Shooter.fire!(board: p_board, target: target)
     @messages << "Your shot resulted in a #{result}."
     (p_kill_count += 1) if sunk_check(result, p_board, p_key, p_kill_count)
