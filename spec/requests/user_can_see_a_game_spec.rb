@@ -5,32 +5,32 @@ describe 'GET /api/v1/games/1' do
     it 'returns a game with boards' do
       player_1_board = Board.new(4)
       player_2_board = Board.new(4)
-      sm_ship = Ship.new(2)
-      md_ship = Ship.new(3)
-
-      ShipPlacer.new(board: player_1_board,
-                     ship: sm_ship,
-                     start_space: "A1",
-                     end_space: "A2"
-                    ).run
-
-      ShipPlacer.new(board: player_1_board,
-                     ship: md_ship,
-                     start_space: "B1",
-                     end_space: "D1"
-                    ).run
-
-      ShipPlacer.new(board: player_2_board,
-                     ship: sm_ship.dup,
-                     start_space: "A1",
-                     end_space: "A2"
-                    ).run
-
-      ShipPlacer.new(board: player_2_board,
-                     ship: md_ship.dup,
-                     start_space: "B1",
-                     end_space: "D1"
-                    ).run
+      # sm_ship = Ship.new(2)
+      # md_ship = Ship.new(3)
+      #
+      # ShipPlacer.new(board: player_1_board,
+      #                ship: sm_ship,
+      #                start_space: "A1",
+      #                end_space: "A2"
+      #               ).run
+      #
+      # ShipPlacer.new(board: player_1_board,
+      #                ship: md_ship,
+      #                start_space: "B1",
+      #                end_space: "D1"
+      #               ).run
+      #
+      # ShipPlacer.new(board: player_2_board,
+      #                ship: sm_ship.dup,
+      #                start_space: "A1",
+      #                end_space: "A2"
+      #               ).run
+      #
+      # ShipPlacer.new(board: player_2_board,
+      #                ship: md_ship.dup,
+      #                start_space: "B1",
+      #                end_space: "D1"
+      #               ).run
 
       game_attributes = {
                       player_1_board: player_1_board,
@@ -45,7 +45,7 @@ describe 'GET /api/v1/games/1' do
 
       get "/api/v1/games/#{game.id}"
 
-      actual  = JSON.parse(response.body, symbolize_names: true)
+      actual = JSON.parse(response.body, symbolize_names: true)
       expected = Game.last
 
       expect(response).to be_success
