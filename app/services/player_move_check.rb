@@ -5,10 +5,6 @@ class PlayerMoveCheck < ApplicationController
     @target = target
   end
 
-  def game_return
-    game if api_key == game.player_1_key || api_key == game.player_2_key
-  end
-
   def status_return
     if api_key != game.player_1_key && api_key != game.player_2_key
       401
@@ -19,7 +15,7 @@ class PlayerMoveCheck < ApplicationController
 
   def message_return
     if api_key != game.player_1_key && api_key != game.player_2_key
-      'Unauthorized'
+      "Unauthorized"
     else
       current_turn_message
     end

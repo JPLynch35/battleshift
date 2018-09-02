@@ -5,6 +5,6 @@ class Api::V1::Games::ShotsController < ApiController
     target = params[:shot][:target]
     
     check = PlayerMoveCheck.new(game, api_key, target)
-    render json: check.game_return, status: check.status_return, message: check.message_return
+    render json: game, status: check.status_return, message: check.message_return
   end
 end

@@ -46,19 +46,6 @@ describe PlayerMoveCheck do
 
     expect(check).to be_a(PlayerMoveCheck)
   end
-  it 'will return the game if player api key is valid' do
-    check = PlayerMoveCheck.new(@game, @user1.api_key, "A1")
-    game = check.game_return
-
-    expect(game.id).to eq(1)
-    expect(game.player_1_board).to be_a(Board)
-  end
-  it 'will not return the game if player api key is invalid' do
-    check = PlayerMoveCheck.new(@game, 'bobby', "A1")
-    game = check.game_return
-
-    expect(game).to eq(nil)
-  end
   it 'will return a 401 status if invalid API key' do
     check = PlayerMoveCheck.new(@game, 'bobby', "A1")
     status = check.status_return
