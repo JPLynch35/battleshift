@@ -9,10 +9,6 @@ class Shooter
     space.attack!
   end
 
-  # def self.fire!(board:, target:)
-  #   new(board: board, target: target).fire!
-  # end
-
   private
   attr_reader :board, :target
 
