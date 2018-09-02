@@ -67,4 +67,11 @@ describe 'GET /api/v1/games/1' do
       expect(response.status).to eq(400)
     end
   end
+
+  it 'will not create game without valid credentials in the post request' do
+
+    post "/api/v1/games"
+
+    expect(response.status).to eq(401)
+  end
 end
