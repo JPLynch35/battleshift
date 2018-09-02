@@ -7,32 +7,6 @@ describe 'GET /api/v1/games/1' do
       user2 = User.create(name: 'JP', email: 'JP@Bob.Bob', password: 'JP', status: 1, api_key: SecureRandom.hex(32))
       player_1_board = Board.new(4)
       player_2_board = Board.new(4)
-      # sm_ship = Ship.new(2)
-      # md_ship = Ship.new(3)
-      #
-      # ShipPlacer.new(board: player_1_board,
-      #                ship: sm_ship,
-      #                start_space: "A1",
-      #                end_space: "A2"
-      #               ).run
-      #
-      # ShipPlacer.new(board: player_1_board,
-      #                ship: md_ship,
-      #                start_space: "B1",
-      #                end_space: "D1"
-      #               ).run
-      #
-      # ShipPlacer.new(board: player_2_board,
-      #                ship: sm_ship.dup,
-      #                start_space: "A1",
-      #                end_space: "A2"
-      #               ).run
-      #
-      # ShipPlacer.new(board: player_2_board,
-      #                ship: md_ship.dup,
-      #                start_space: "B1",
-      #                end_space: "D1"
-      #               ).run
 
       game_attributes = {
         player_1_key: user1.api_key,

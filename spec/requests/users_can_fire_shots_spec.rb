@@ -42,7 +42,6 @@ describe "POST /api/v1/games/:id/shots" do
     @game.update_attribute(:player_2_board, @game.player_2_board)
   end
   it 'player 1 and player 2 can fire a shot and hit' do
-    endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "D1"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
@@ -50,8 +49,7 @@ describe "POST /api/v1/games/:id/shots" do
     expect(JSON.parse(response.body, symbolize_names: true)[:message]).to include("Your shot resulted in a Hit")
     expect(Game.last.player_2_board.board.last.first['D1'].status).to eq("Hit")
     expect(Game.last[:winner]).to be_nil
-    
-    endpoint = "/api/v1/games/#{@game_id}/shots"
+
     json_payload = {target: "A1"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
@@ -62,7 +60,6 @@ describe "POST /api/v1/games/:id/shots" do
     expect(Game.last[:winner]).to be_nil
   end
   it 'player 1 can fire a shot and miss' do
-    endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "B1"}.to_json
     headers = {"X-API-Key" => @user1.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
@@ -72,7 +69,6 @@ describe "POST /api/v1/games/:id/shots" do
     expect(Game.last.player_2_board.board.second.first['B1'].status).to eq("Miss")
     expect(Game.last[:winner]).to be_nil
 
-    endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "B1"}.to_json
     headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
     post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
