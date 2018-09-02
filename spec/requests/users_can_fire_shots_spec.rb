@@ -26,6 +26,18 @@ describe "POST /api/v1/games/:id/shots" do
       start_space: "D1",
       end_space: "D3"
     ).run
+    ShipPlacer.new(
+      board: @game.player_1_board,
+      ship: Ship.new(2),
+      start_space: "C1",
+      end_space: "C2"
+    ).run
+    ShipPlacer.new(
+      board: @game.player_2_board,
+      ship: Ship.new(2),
+      start_space: "C1",
+      end_space: "C2"
+    ).run
     @game.update_attribute(:player_1_board, @game.player_1_board)
     @game.update_attribute(:player_2_board, @game.player_2_board)
   end
