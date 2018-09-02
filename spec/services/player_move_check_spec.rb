@@ -68,9 +68,10 @@ describe PlayerMoveCheck do
 
     expect(status).to eq(400)
   end
-  it 'will return an unauthorized message if invalid API key' do
+  it 'will return an unauthorized message in json if invalid API key' do
     check = PlayerMoveCheck.new(@game, 'bobby', "A1")
-    message = check.message_return
+    json_message = check.game_return
+    message = JSON.parse(json_message, symbolize_names: true)[:message]
 
     expect(message).to eq('Unauthorized')
   end
