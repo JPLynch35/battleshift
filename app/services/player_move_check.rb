@@ -13,13 +13,15 @@ class PlayerMoveCheck < ApplicationController
     if api_key != game.player_1_key && api_key != game.player_2_key
       401
     else
-    current_turn_status
+      current_turn_status
     end
   end
 
   def message_return
     if api_key != game.player_1_key && api_key != game.player_2_key
-      return "Unauthorized"
+      'Unauthorized'
+    elsif !game.player_1_board.space_names.include?(target)
+      'Invalid coordinates.'
     else
       current_turn_message
     end
@@ -29,9 +31,9 @@ class PlayerMoveCheck < ApplicationController
   attr_reader :game, :api_key, :target
   
   def current_turn_status
-    if game.current_turn == 'challenger' && api_key == game.player_1_key && game.winner == nil
+    if game.current_turn == 'challenger' && api_key == game.player_1_key && game.winner == nil && game.player_1_board.space_names.include?(target)
       200
-    elsif game.current_turn == 'opponent' && api_key == game.player_2_key && game.winner == nil
+    elsif game.current_turn == 'opponent' && api_key == game.player_2_key && game.winner == nil && game.player_1_board.space_names.include?(target)
       200
     else
       400

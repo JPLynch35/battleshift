@@ -85,14 +85,6 @@ describe "POST /api/v1/games/:id/shots" do
     result = JSON.parse(response.body)
     expect(result['message']).to eq('Invalid coordinates.')
 
-    endpoint = "/api/v1/games/#{@game_id}/shots"
-    json_payload = {target: "B6"}.to_json
-    headers = {"X-API-Key" => @user2.api_key, "CONTENT_TYPE" => "application/json" }
-    post "/api/v1/games/#{@game.id}/shots", params: json_payload, headers: headers
-
-    result = JSON.parse(response.body)
-    expect(result['message']).to eq('Invalid coordinates.')
-
     #hits
     endpoint = "/api/v1/games/#{@game_id}/shots"
     json_payload = {target: "D2"}.to_json

@@ -132,4 +132,12 @@ describe PlayerMoveCheck do
     expect(status).to eq(400)
     expect(message).to eq("Invalid move. Game over.")
   end
+  it 'will return an invalid message if shot is not on board' do
+    check = PlayerMoveCheck.new(@game, @user1.api_key, "E1")
+    status = check.status_return
+    message = check.message_return
+
+    expect(status).to eq(400)
+    expect(message).to eq("Invalid coordinates.")
+  end
 end
