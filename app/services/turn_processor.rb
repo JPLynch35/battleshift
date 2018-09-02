@@ -6,25 +6,17 @@ class TurnProcessor
   end
 
   def run_player_1!
-    # begin
       attack!(game.player_2_board, game.p1_kill_count, game.player_1_key)
       game.current_turn = 'opponent'
       game.player_1_turns += 1
       game.save!
-    # rescue InvalidAttack => e
-    #   @messages << e.message
-    # end
   end
 
   def run_player_2!
-    # begin
       attack!(game.player_1_board, game.p2_kill_count, game.player_2_key)
       game.current_turn = 'challenger'
       game.player_2_turns += 1
       game.save!
-    # rescue InvalidAttack => e
-    #   @messages << e.message
-    # end
   end
 
   def message
