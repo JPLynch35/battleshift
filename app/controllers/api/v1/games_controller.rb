@@ -1,6 +1,9 @@
 class Api::V1::GamesController < ActionController::API
   def show
-    game = Game.find_by_id(params[:id])
+    game_id = params[:id]
+    api_key = request.headers['X-API-Key']
+    game_finder = GameFinder.new(game_id, api_key)
+    game = game_finder.retrieve_game
     if game
       render json: game
     else
