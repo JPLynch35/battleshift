@@ -22,7 +22,7 @@ class Api::V1::GamesController < ActionController::API
       game = Game.create(game_attributes)
       render json: game
     else
-      render json: {message: "Unauthorized"}, status: 401
+      render status: 401, json: {message: "Unauthorized"}
     end
   end
 end
