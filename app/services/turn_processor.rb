@@ -62,5 +62,5 @@ class TurnProcessor
       game.update_attribute(:winner, winner_email)
     end
   end
-
+  
 end

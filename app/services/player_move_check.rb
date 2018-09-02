@@ -1,25 +1,21 @@
-class PlayerTurnCheck < ApplicationController
+class PlayerMoveCheck < ApplicationController
   def initialize(game, api_key, target)
     @game = game
     @api_key = api_key
     @target = target
   end
 
-  def game_return
-    game if api_key == game.player_1_key || api_key == game.player_2_key
-  end
-
   def status_return
     if api_key != game.player_1_key && api_key != game.player_2_key
       401
     else
-    current_turn_status
+      current_turn_status
     end
   end
 
   def message_return
     if api_key != game.player_1_key && api_key != game.player_2_key
-      return "Unauthorized"
+      "Unauthorized"
     else
       current_turn_message
     end
@@ -29,9 +25,9 @@ class PlayerTurnCheck < ApplicationController
   attr_reader :game, :api_key, :target
   
   def current_turn_status
-    if game.current_turn == 'challenger' && api_key == game.player_1_key
+    if game.current_turn == 'challenger' && api_key == game.player_1_key && game.winner == nil && game.player_1_board.space_names.include?(target)
       200
-    elsif game.current_turn == 'opponent' && api_key == game.player_2_key
+    elsif game.current_turn == 'opponent' && api_key == game.player_2_key && game.winner == nil && game.player_1_board.space_names.include?(target)
       200
     else
       400
@@ -39,7 +35,11 @@ class PlayerTurnCheck < ApplicationController
   end
 
   def current_turn_message
-    if game.current_turn == 'challenger' && api_key == game.player_1_key
+    if !game.winner.nil?
+      "Invalid move. Game over."
+    elsif !game.player_1_board.space_names.include?(target)
+      "Invalid coordinates."
+    elsif  game.current_turn == 'challenger' && api_key == game.player_1_key
       turn_processor = TurnProcessor.new(game, target)
       turn_processor.run_player_1!
       turn_processor.message
