@@ -1,7 +1,11 @@
 class Api::V1::Games::ShipsController < ApiController
   def create
-    @game = Game.find(params[:game_id])
-    return if board == nil
+    game_id = params[:game_id]
+    api_key = request.headers['X-API-Key']
+    game_finder = GameFinder.new(game_id, api_key)
+    @game = game_finder.retrieve_game
+    return unauthorized if @game == nil
+    return unauthorized if board == nil
     place_ship
     message
   end
@@ -14,8 +18,11 @@ class Api::V1::Games::ShipsController < ApiController
     def board
       return @game.player_1_board if request.headers['X-API-KEY'] == @game.player_1_key
       return @game.player_2_board if request.headers['X-API-KEY'] == @game.player_2_key
-      render json: {message: "Unauthorized"}, status: 401
       nil
+    end
+
+    def unauthorized
+      render json: {message: "Unauthorized"}, status: 401
     end
 
     def place_ship

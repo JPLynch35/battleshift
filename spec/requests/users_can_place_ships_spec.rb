@@ -36,7 +36,6 @@ describe 'POST /api/v1/games/:id/ships' do
     }.to_json
     
     headers = {"X-API-Key" => 'bobby', "CONTENT_TYPE" => "application/json" }
-    
     post "/api/v1/games/#{game.id}/ships", params: json_payload, headers: headers
 
     expect(response.status).to be(401)

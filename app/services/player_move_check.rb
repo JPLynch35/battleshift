@@ -1,12 +1,20 @@
 class PlayerMoveCheck < ApplicationController
-  def initialize(game, api_key, target)
-    @game = game
+  def initialize(game_id, api_key, target)
+    @game = GameFinder.new(game_id, api_key).retrieve_game
     @api_key = api_key
     @target = target
   end
 
+  def game_return
+    if game.nil?
+      {message: "Unauthorized"}.to_json
+    else
+      game
+    end
+  end
+
   def status_return
-    if api_key != game.player_1_key && api_key != game.player_2_key
+    if game.nil?
       401
     else
       current_turn_status
@@ -14,8 +22,8 @@ class PlayerMoveCheck < ApplicationController
   end
 
   def message_return
-    if api_key != game.player_1_key && api_key != game.player_2_key
-      "Unauthorized"
+    if game.nil?
+      nil
     else
       current_turn_message
     end
