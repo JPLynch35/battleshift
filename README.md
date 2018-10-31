@@ -7,7 +7,7 @@ A version of this API was already created as a player vs computer game, our aim 
 In order to play, both users must register by visiting the home page and clicking on the link in the verification email.
 All game requests to the api will require the user's api key in the headers under X-API_Key: <your-api-key>
 
-### Production Site (back end API)
+### Production Site (Back End API)
 [https://battleshift19.herokuapp.com/](https://battleshift19.herokuapp.com/)
 
 ### EndPoints:
